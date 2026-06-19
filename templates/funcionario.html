@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+
+{% block conteudo %}
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<div class="flash-error px-3">
+    {% for category, message in messages %}
+    <div class="alert {{ category }} alert-dismissible fade show px-5" role="alert">
+        <strong>{{ message }}</strong>.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+{% endwith %}
+
+<!-- Page Header -->
+<div class="row align-items-end mb-5 gy-4">
+    <div class="col-md">
+        <h1 class="font-headline-lg text-headline-lg text-primary-container-theme mb-2">Funcionários Cadastrados</h1>
+        <p class="text-on-primary-container font-body-md mb-0">Gerencie e monitore o fluxo de remessas em tempo
+            real.</p>
+        <div class="d-flex align-items-end justify-content-end">
+            <button class="btn btn-primary w-20 d-flex align-items-center justify-content-center gap-2" type="submit"
+                    data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                Nova Funcionário
+            </button>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+         aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Cadastrar Funcionario</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="form-cadastro" action="{{ url_for('todos_funcionarios') }}" method="post">
+                        <label>
+                            Nome:
+                            <input placeholder="Digite o nome" name="form_nome"
+                                   class="form-control w-100">
+                        </label>
+                        <label>
+                            CPF:
+                            <input type="number" placeholder="00000000000" name="form_cpf" class="form-control w-100">
+                        </label>
+                        <label>
+                            Email:
+                            <input type="email" placeholder="@gmail" name="form_email" class="form-control w-100">
+                        </label>
+                        <label>
+                            Senha:
+                            <input type="password" placeholder="****" name="form_senha" class="form-control w-100">
+                        </label>
+
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-info mt-2" style="margin: 20px;">Cadastrar</button>
+                            <button type="button" class="btn btn-danger mt-2 h-4 w-2" data-bs-dismiss="modal">Fechar
+                            </button>
+                        </div>
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Data Table Section -->
+<div class="card shadow-sm border-0 overflow-hidden">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nome</th>
+                <th>CPF</th>
+                <th>Email</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Row 1 -->
+            {% for funcionarios in funcionarios %}
+            <tr>
+                <th>{{ funcionarios.id }}</th>
+                <th>{{ funcionarios.nome }}</th>
+                <th>{{ funcionarios.cpf }}</th>
+                <th>{{ funcionarios.email }}</th>
+            </tr>
+
+
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+{% endblock %}

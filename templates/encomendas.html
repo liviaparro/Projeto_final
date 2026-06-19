@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+
+{% block conteudo %}
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<div class="flash-error px-3">
+    {% for category, message in messages %}
+    <div class="alert {{ category }} alert-dismissible fade show px-5" role="alert">
+        <strong>{{ message }}</strong>.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+{% endwith %}
+
+<!-- Page Header -->
+<div class="row align-items-end mb-5 gy-4">
+    <div class="col-md">
+        <h1 class="font-headline-lg text-headline-lg text-primary-container-theme mb-2">Encomendas Cadastradas</h1>
+        <p class="text-on-primary-container font-body-md mb-0">Gerencie e monitore o fluxo de remessas em tempo
+            real.</p>
+        <div class="d-flex align-items-end justify-content-end">
+            <button class="btn btn-primary w-20 d-flex align-items-center justify-content-center gap-2" type="submit"
+                    data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                Nova Encomenda
+            </button>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+         aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Cadastrar Encomenda</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                    <form id="form-cadastro" action="{{ url_for('todas_encomendas') }}" method="post">
+                        <label>
+                            Cliente:<br>
+                            <select name="cliente_id">
+                                {% for cliente in clientes %}
+                                <option value="{{cliente.id}}">{{cliente.nome}}</option>
+                                {% endfor %}
+                            </select>
+                        </label><br>
+                        <label>
+                            Fragilidade:
+                            <input id="fragilidade" placeholder="Digite a fragilidade" name="fragilidade"
+                                   class="form-control w-100">
+                        </label>
+                        <label>
+                            Tipo:
+                            <input id="tipo" placeholder="Digite o tipo" name="tipo" class="form-control w-100">
+                        </label>
+                        <label>
+                            Remetente:<br>
+                            <select name="remetente_id">
+                                {% for remetente in remetentes %}>
+                                <option value="{{remetente.id}}">{{remetente.nome}}</option>
+                                {% endfor %}
+                            </select>
+                        </label>
+
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-info mt-2" style="margin: 20px;">Cadastrar</button>
+                            <button type="button" class="btn btn-danger mt-2 h-4 w-2" data-bs-dismiss="modal">Fechar
+                            </button>
+                        </div>
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Data Table Section -->
+<div class="card shadow-sm border-0 overflow-hidden">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead>
+            <tr>
+                <th>Codigo de Rastreio</th>
+                <th>Cliente</th>
+                <th>Fragilidade</th>
+                <th>Tipo</th>
+                <th>Remetente</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Row 1 -->
+            {% for encomenda in encomendas %}
+            <tr>
+                <th>
+                    <span class="badge bg-secondary font-mospace" style="letter-spacing: 1px;">
+                        {{ encomenda.codigo_rastreio}}
+                    </span>
+                </th>
+                <th>{{ encomenda.cliente.nome }}</th>
+                <th>{{ encomenda.fragilidade }}</th>
+                <th>{{ encomenda.tipo }}</th>
+                <th>{{ encomenda.remetente.nome }}</th>
+
+            </tr>
+
+
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+{% endblock %}

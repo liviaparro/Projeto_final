@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+
+{% block conteudo %}
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<div class="flash-error px-3">
+    {% for category, message in messages %}
+    <div class="alert {{ category }} alert-dismissible fade show px-5" role="alert">
+        <strong>{{ message }}</strong>.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+{% endwith %}
+
+<!-- Page Header -->
+<div class="row align-items-end mb-5 gy-4">
+    <div class="col-md">
+        <h1 class="font-headline-lg text-headline-lg text-primary-container-theme mb-2">Remetentes Cadastrados</h1>
+        <p class="text-on-primary-container font-body-md mb-0">Gerencie e monitore o fluxo de remessas em tempo
+            real.</p>
+        <div class="d-flex align-items-end justify-content-end">
+            <button class="btn btn-primary w-20 d-flex align-items-center justify-content-center gap-2" type="submit"
+                    data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                Novo Remetente
+            </button>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+         aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Cadastrar Remetente</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="form-cadastro" action="{{ url_for('todos_remetentes') }}" method="post">
+                        <label>
+                            Remetente:
+                            <input id="nome" placeholder="Digite o remetente" name="form_nome"
+                                   class="form-control w-100">
+                        </label>
+                        <label>
+                            CEP:
+                            <input id="form_cep" placeholder="EX: 20040-002" name="form_cep"
+                                   class="form-control w-100">
+                        </label>
+                        <div class="d-flex ´flex-direction-end">
+                            <a class="btn btn-danger mt-2 w-2 h-4" onclick="get_cep()">Buscar</a>
+                        </div>
+                        <label>
+                            Cidade:
+                            <input id="form_cidade" placeholder="Digite a cidade" name="form_cidade" class="form-control w-100" readonly>
+                        </label>
+                        <label>
+                            Estado:
+                            <input id="form_estado" placeholder="Digite o estado" name="form_estado" class="form-control w-100" readonly>
+                        </label>
+
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-info mt-2" style="margin: 20px;">Cadastrar</button>
+                            <button type="button" class="btn btn-danger mt-2 h-4 w-2" data-bs-dismiss="modal">Fechar
+                            </button>
+                        </div>
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Data Table Section -->
+<div class="card shadow-sm border-0 overflow-hidden">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Remetente</th>
+                <th>Cidade</th>
+                <th>Estado</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Row 1 -->
+            {% for remetente in remetentes %}
+            <tr>
+                <th>{{ remetente.id }}</th>
+                <th>{{ remetente.nome }}</th>
+                <th>{{ remetente.cidade }}</th>
+                <th>{{ remetente.estado }}</th>
+            </tr>
+
+
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<script>
+    async function get_cep() {
+        const input_cep = document.getElementById('form_cep')
+
+        let url = "https://viacep.com.br/ws/" + input_cep.value + "/json/"
+        let resultado = await fetch(url)
+
+        if (resultado.ok) {
+            let dados = await resultado.json()
+            const input_cidade = document.getElementById('form_cidade')
+            const input_estado = document.getElementById('form_estado')
+
+            input_cidade.value = dados.localidade
+            input_estado.value = dados.estado
+        }
+    }
+</script>
+{% endblock %}
