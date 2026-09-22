@@ -42,9 +42,18 @@
                     <form id="form-cadastro" action="{{ url_for('todas_encomendas') }}" method="post">
                         <label>
                             Cliente:<br>
-                            <select name="cliente_id">
+                            <select class="form-select" name="cliente_id">
                                 {% for cliente in clientes %}
                                 <option value="{{cliente.id}}">{{cliente.nome}}</option>
+                                {% endfor %}
+                            </select>
+                        </label>
+
+                         <label>
+                            Remetente:<br>
+                            <select class="form-select" name="remetente_id">
+                                {% for remetente in remetentes %}>
+                                <option value="{{remetente.id}}">{{remetente.nome}}</option>
                                 {% endfor %}
                             </select>
                         </label><br>
@@ -57,17 +66,10 @@
                             Tipo:
                             <input id="tipo" placeholder="Digite o tipo" name="tipo" class="form-control w-100">
                         </label>
-                        <label>
-                            Remetente:<br>
-                            <select name="remetente_id">
-                                {% for remetente in remetentes %}>
-                                <option value="{{remetente.id}}">{{remetente.nome}}</option>
-                                {% endfor %}
-                            </select>
-                        </label>
+
 
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-info mt-2" style="margin: 20px;">Cadastrar</button>
+                            <button type="submit" class="btn btn-info mt-2" >Cadastrar</button>
                             <button type="button" class="btn btn-danger mt-2 h-4 w-2" data-bs-dismiss="modal">Fechar
                             </button>
                         </div>

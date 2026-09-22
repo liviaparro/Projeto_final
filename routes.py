@@ -1,6 +1,6 @@
 import requests
 
-base_url = "http://10.135.232.18:5000"
+base_url = "http://10.135.232.26:5000"
 
 def get_listar_clientes():
     url = f"{base_url}/todos_clientes"

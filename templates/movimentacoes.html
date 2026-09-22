@@ -41,7 +41,7 @@
                     <form id="form-cadastro" action="{{ url_for('todas_movimentacoes') }}" method="post">
                         <label>
                             Localização:
-                            <select name="centro_id">
+                            <select class="form-select" name="centro_id">
                                 {% for centro in centros %}
                                 <option value="{{centro.id}}">{{centro.cidade}} - {{centro.estado}}</option>
                                 {% endfor %}
@@ -49,7 +49,7 @@
                         </label>
                         <label>
                             Código de Rastreio:
-                            <select name="form_codigo">
+                            <select class="form-select" name="form_codigo">
                                 {% for encomenda in encomendas %}
                                 <option value="{{encomenda.id}}">{{encomenda.id}} - {{encomenda.codigo_rastreio}}</option>
                                 {% endfor %}
@@ -57,7 +57,7 @@
                         </label>
 
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-info mt-2" style="margin: 20px;">Cadastrar</button>
+                            <button type="submit" class="btn btn-info mt-2" style="">Cadastrar</button>
                             <button type="button" class="btn btn-danger mt-2 h-4 w-2" data-bs-dismiss="modal">Fechar
                             </button>
                         </div>
